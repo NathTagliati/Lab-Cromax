@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="description" content="Lab Cromax — Laboratório de Prótese Dentária em São Paulo."/>
+  <title>Lab Cromax — Laboratório de Prótese Dentária</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico"/>
+  <link rel="icon" type="image/png" sizes="256x256" href="favicon.png"/>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700;1,800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+
+  <style>
+    :root{--principal:#0a1940;--dourado:#c9a84c;--creme:#faf9f6;--mudo:#6b7280;}
+
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Inter',sans-serif;color:var(--principal);background:var(--creme);overflow-x:hidden;}
+    h1,h2,h3,h4,.serifa{font-family:'Playfair Display',serif;}
+    ::-webkit-scrollbar{width:4px;}
+    ::-webkit-scrollbar-track{background:var(--principal);}
+    ::-webkit-scrollbar-thumb{background:var(--dourado);}
+
+    /* NAVBAR */
+    .barra-nav{background:rgba(10,25,64,.97);backdrop-filter:blur(14px);padding:.8rem 0;border-bottom:1px solid rgba(201,168,76,.12);}
+    .barra-nav .navbar-brand img{height:50px;}
+    .link-nav{color:rgba(255,255,255,.78);font-size:.74rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;padding:.5rem 1rem;position:relative;transition:color .2s;}
+    .link-nav::after{content:'';position:absolute;bottom:0;left:1rem;right:1rem;height:1px;background:var(--dourado);transform:scaleX(0);transform-origin:center;transition:transform .25s;}
+    .link-nav:hover,.link-nav.ativo{color:var(--dourado);}
+    .link-nav:hover::after,.link-nav.ativo::after{transform:scaleX(1);}
+    .navbar-toggler{border-color:rgba(201,168,76,.4);}
+    .navbar-toggler-icon{background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(201,168,76,1)' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");}
+    @media(max-width:991px){#menu-nav{background:rgba(10,25,64,.99);padding:1rem;margin-top:.5rem;border-top:1px solid rgba(201,168,76,.15);}}
+
+    /* HERO */
+    #heroi{min-height:100vh;position:relative;display:flex;align-items:center;overflow:hidden;background-image:url('1.jpeg');background-size:cover;background-position:center top;}
+    .sobreposicao-heroi{position:absolute;inset:0;background:linear-gradient(130deg,rgba(10,25,64,.88) 0%,rgba(10,25,64,.45) 50%,rgba(10,25,64,.15) 100%);}
+    #heroi .container{position:relative;z-index:2;}
+    .olho-heroi{display:inline-flex;align-items:center;gap:.6rem;color:var(--dourado);font-size:.7rem;font-weight:600;letter-spacing:.3em;text-transform:uppercase;margin-bottom:1.3rem;}
+    .olho-heroi::before{content:'';width:26px;height:1px;background:var(--dourado);display:inline-block;}
+    .titulo-heroi{font-size:clamp(3rem,7vw,6.5rem);color:#fff;line-height:1;letter-spacing:-.015em;margin-bottom:1.5rem;}
+    .titulo-heroi em{font-style:italic;color:var(--dourado);}
+    .subtitulo-heroi{font-size:.97rem;color:rgba(255,255,255,.6);font-weight:300;line-height:1.95;max-width:430px;margin-bottom:2.5rem;}
+    .num-stat{font-family:'Playfair Display',serif;font-size:2.9rem;font-weight:800;color:#fff;line-height:1;}
+    .num-stat span{color:var(--dourado);}
+    .label-stat{font-size:.67rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.42);margin-top:.22rem;}
+
+    /* BOTÕES */
+    .btn-dourado{display:inline-flex;align-items:center;gap:.5rem;background:var(--dourado);color:var(--principal);font-weight:700;font-size:.74rem;letter-spacing:.13em;text-transform:uppercase;padding:.9rem 2.1rem;border:2px solid var(--dourado);border-radius:0;text-decoration:none;transition:all .22s;}
+    .btn-dourado:hover{background:transparent;color:var(--dourado);}
+    .btn-contorno{display:inline-flex;align-items:center;gap:.5rem;background:transparent;color:rgba(255,255,255,.8);font-weight:500;font-size:.74rem;letter-spacing:.13em;text-transform:uppercase;padding:.9rem 2.1rem;border:2px solid rgba(255,255,255,.22);border-radius:0;text-decoration:none;transition:all .22s;}
+    .btn-contorno:hover{border-color:var(--dourado);color:var(--dourado);}
+
+    /* HELPERS DE SEÇÃO */
+    .olho{display:inline-flex;align-items:center;gap:.6rem;color:var(--dourado);font-size:.7rem;font-weight:600;letter-spacing:.28em;text-transform:uppercase;margin-bottom:.9rem;}
+    .olho::before{content:'';width:22px;height:1px;background:var(--dourado);display:inline-block;}
+    .titulo-secao{font-size:clamp(2rem,4vw,3.2rem);line-height:1.07;}
+    .divisor{width:38px;height:2px;background:var(--dourado);margin:1rem 0 1.8rem;}
+    .fade-subir{opacity:0;transform:translateY(28px);transition:opacity .65s ease,transform .65s ease;}
+    .fade-subir.ativo{opacity:1;transform:translateY(0);}
+
+    /* DIFERENCIAIS */
+    #diferenciais{background:var(--creme);position:relative;overflow:hidden;}
+    #diferenciais::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(to bottom,transparent,var(--dourado) 20%,var(--dourado) 80%,transparent);}
+    .dif-bloco{display:grid;grid-template-columns:90px 1fr;position:relative;cursor:default;background:transparent;transition:background .3s;}
+    .dif-bloco+.dif-bloco{border-top:1px solid rgba(10,25,64,.09);}
+    .dif-bloco:hover{background:#fff;box-shadow:0 2px 24px rgba(10,25,64,.06);}
+    .dif-bloco-esq{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:3rem 0;border-right:1px solid rgba(10,25,64,.09);gap:1rem;min-width:90px;}
+    .dif-bloco-n{font-family:'Playfair Display',serif;font-size:.7rem;font-weight:800;color:var(--dourado);letter-spacing:.22em;}
+    .dif-bloco-ico{width:50px;height:50px;border-radius:50%;background:rgba(201,168,76,.1);border:1.5px solid rgba(201,168,76,.35);display:flex;align-items:center;justify-content:center;font-size:1.15rem;color:var(--dourado);transition:all .3s;}
+    .dif-bloco:hover .dif-bloco-ico{background:var(--dourado);color:#fff;border-color:var(--dourado);box-shadow:0 4px 20px rgba(201,168,76,.4);}
+    .dif-bloco-dir{padding:3rem 3rem;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden;}
+    .dif-bloco-dir::after{content:attr(data-n);position:absolute;right:.5rem;top:50%;transform:translateY(-50%);font-family:'Playfair Display',serif;font-size:8rem;font-weight:800;color:rgba(10,25,64,.04);line-height:1;pointer-events:none;transition:color .3s;}
+    .dif-bloco:hover .dif-bloco-dir::after{color:rgba(201,168,76,.1);}
+    .dif-bloco-tag{display:inline-flex;align-items:center;gap:.4rem;font-size:.62rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--dourado);margin-bottom:.5rem;}
+    .dif-bloco-tag::before{content:'';width:16px;height:1px;background:var(--dourado);}
+    .dif-bloco-titulo{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:800;color:var(--principal);margin-bottom:.55rem;line-height:1.1;transition:color .25s;}
+    .dif-bloco:hover .dif-bloco-titulo{color:var(--dourado);}
+    .dif-bloco-texto{font-size:.84rem;color:var(--mudo);line-height:1.9;max-width:520px;margin:0;}
+    @media(max-width:767px){
+      .dif-bloco-esq{min-width:70px;padding:2.2rem 0;}
+      .dif-bloco-dir{padding:2.2rem 1.8rem;}
+      .dif-bloco-titulo{font-size:1.3rem;}
+      .dif-bloco-dir::after{font-size:5rem;}
+    }
+    @media(max-width:575px){
+      .dif-bloco{grid-template-columns:58px 1fr;}
+      .dif-bloco-esq{min-width:58px;}
+      .dif-bloco-ico{width:38px;height:38px;font-size:.9rem;}
+      .dif-bloco-dir{padding:1.8rem 1.2rem;}
+    }
+
+    /* CARROSSEL  */
+    #servicos{background:var(--principal);}
+    .envoltorio-carrossel{position:relative;overflow:hidden;border-radius:3px;}
+    .trilho-carrossel{display:flex;transition:transform .65s cubic-bezier(.25,.8,.25,1);}
+    .slide-servico{min-width:100%;position:relative;aspect-ratio:16/9;}
+    .slide-servico img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;}
+    .legenda-slide{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,25,64,.92) 0%,rgba(10,25,64,.12) 52%,transparent 100%);display:flex;flex-direction:column;justify-content:flex-end;padding:2.8rem 3.2rem;}
+    .legenda-slide h3{font-size:clamp(1.8rem,3.2vw,2.8rem);color:#fff;line-height:1.08;margin-bottom:.65rem;}
+    .legenda-slide p{font-size:.84rem;color:rgba(255,255,255,.62);max-width:500px;line-height:1.85;margin:0;}
+    .btn-carrossel{position:absolute;top:50%;transform:translateY(-50%);width:52px;height:52px;border:2px solid rgba(255,255,255,.28);border-radius:50%;background:rgba(10,25,64,.55);backdrop-filter:blur(6px);color:#fff;font-size:1.1rem;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .22s;z-index:5;}
+    .btn-carrossel:hover{border-color:var(--dourado);color:var(--dourado);}
+    .btn-anterior{left:1.2rem;}.btn-proximo{right:1.2rem;}
+    .pontos-carrossel{display:flex;gap:.55rem;justify-content:center;margin-top:1.4rem;}
+    .ponto-carrossel{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.22);border:none;padding:0;cursor:pointer;transition:all .3s;}
+    .ponto-carrossel.ativo{background:var(--dourado);transform:scale(1.3);}
+    .contador-carrossel{position:absolute;top:1.2rem;right:1.2rem;background:rgba(10,25,64,.75);backdrop-filter:blur(6px);border:1px solid rgba(201,168,76,.3);color:var(--dourado);font-family:'Playfair Display',serif;font-size:.85rem;font-weight:700;padding:.3rem .8rem;border-radius:1px;z-index:5;}
+    .barra-progresso{position:absolute;bottom:0;left:0;height:3px;background:var(--dourado);width:0%;z-index:6;transition:width linear;}
+
+    /* SOBRE */
+    #sobre{background:var(--creme);}
+    .moldura-foto{position:relative;display:inline-block;width:100%;}
+    .moldura-foto img{width:100%;height:560px;object-fit:cover;border-radius:2px;display:block;}
+    .borda-foto{position:absolute;bottom:-18px;right:-18px;width:calc(100% - 28px);height:calc(100% - 28px);border:2px solid var(--dourado);border-radius:2px;pointer-events:none;z-index:-1;}
+    .topico{display:flex;gap:1.2rem;padding:1.1rem 0;border-bottom:1px solid rgba(10,25,64,.08);}
+    .topico:last-child{border-bottom:none;}
+    .topico-num{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:800;color:var(--dourado);flex-shrink:0;line-height:1;padding-top:.1rem;}
+    .topico h5{font-size:.86rem;font-weight:700;color:var(--principal);margin-bottom:.25rem;}
+    .topico p{font-size:.81rem;color:var(--mudo);line-height:1.82;margin:0;}
+
+    /* PROCESSO */
+    #processo{background:#f0ede6;}
+    .etapa{display:flex;gap:1.6rem;padding-bottom:2.8rem;position:relative;}
+    .etapa:last-child{padding-bottom:0;}
+    .etapa::before{content:'';position:absolute;left:27px;top:54px;width:1px;height:calc(100% - 54px);background:linear-gradient(to bottom,var(--dourado),transparent);}
+    .etapa:last-child::before{display:none;}
+    .circulo-etapa{width:54px;height:54px;flex-shrink:0;border:2px solid var(--dourado);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:800;color:var(--dourado);background:#f0ede6;transition:all .25s;}
+    .etapa:hover .circulo-etapa{background:var(--dourado);color:var(--principal);}
+    .etapa h4{font-size:1.05rem;color:var(--principal);margin-bottom:.3rem;}
+    .etapa p{font-size:.81rem;color:var(--mudo);line-height:1.82;margin:0;}
+
+    /* DEPOIMENTOS */
+    #depoimentos{background:var(--principal);}
+    .cartao-dep{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:2px;padding:2rem;transition:border-color .25s;height:100%;}
+    .cartao-dep:hover{border-color:rgba(201,168,76,.3);}
+    .estrelas-dep{color:var(--dourado);font-size:.8rem;margin-bottom:.85rem;}
+    .texto-dep{font-family:'Playfair Display',serif;font-size:1.1rem;color:rgba(255,255,255,.82);line-height:1.65;font-style:italic;margin-bottom:1.3rem;}
+    .autor-dep{display:flex;align-items:center;gap:.7rem;padding-top:.85rem;border-top:1px solid rgba(255,255,255,.07);}
+    .avatar-dep{width:36px;height:36px;border-radius:50%;background:rgba(201,168,76,.18);display:flex;align-items:center;justify-content:center;font-size:.9rem;color:var(--dourado);flex-shrink:0;}
+    .nome-dep{font-size:.79rem;font-weight:600;color:#fff;}
+    .cargo-dep{font-size:.69rem;color:rgba(255,255,255,.36);}
+
+    /* CONTATO */
+    #contato{background:var(--creme);}
+
+    /* RODAPÉ */
+    footer{background:var(--principal);}
+    .titulo-rodape{font-size:.67rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--dourado);margin-bottom:1.2rem;}
+    .link-rodape{display:flex;align-items:center;gap:.5rem;color:rgba(255,255,255,.5);font-size:.8rem;text-decoration:none;margin-bottom:.55rem;transition:color .2s;}
+    .link-rodape:hover{color:var(--dourado);}
+    .redes-sociais a{display:inline-flex;align-items:center;justify-content:center;width:35px;height:35px;border-radius:50%;border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.52);text-decoration:none;margin-right:.4rem;transition:all .2s;}
+    .redes-sociais a:hover{border-color:var(--dourado);color:var(--dourado);}
+    .barra-rodape{border-top:1px solid rgba(255,255,255,.07);padding:1.4rem 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.6rem;}
+    .barra-rodape span{font-size:.69rem;color:rgba(255,255,255,.27);}
+    .barra-rodape a{font-size:.69rem;color:rgba(255,255,255,.37);text-decoration:none;cursor:pointer;transition:color .2s;margin-left:1.1rem;}
+    .barra-rodape a:hover{color:var(--dourado);}
+
+    /* FLUTUANTES */
+    .botao-whatsapp{position:fixed;bottom:5.5rem;right:1.4rem;background:#25d366;color:#fff;border-radius:50%;width:54px;height:54px;display:flex;align-items:center;justify-content:center;font-size:1.45rem;z-index:9997;box-shadow:0 4px 20px rgba(37,211,102,.4);text-decoration:none;transition:transform .2s;}
+    .botao-whatsapp:hover{transform:scale(1.1);color:#fff;}
+
+    /* BANNER DE COOKIES */
+    #banner-cookie{position:fixed;bottom:0;left:0;right:0;background:rgba(10,25,64,.98);border-top:1px solid rgba(201,168,76,.22);padding:1rem 1.5rem;display:none;align-items:center;flex-wrap:wrap;gap:.85rem;z-index:999999;backdrop-filter:blur(10px);}
+    #banner-cookie p{color:rgba(255,255,255,.72);font-size:.77rem;margin:0;flex:1;min-width:180px;}
+    #banner-cookie a{color:var(--dourado);text-decoration:underline;}
+    .btn-aceitar-todos{background:var(--dourado);color:var(--principal);border:none;border-radius:1px;padding:.46rem 1.1rem;font-size:.74rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;}
+    .btn-apenas-essenciais{background:transparent;color:rgba(255,255,255,.58);border:1px solid rgba(255,255,255,.18);border-radius:1px;padding:.46rem 1.1rem;font-size:.74rem;cursor:pointer;}
+
+    /* MODAIS */
+    .modal-header{background:var(--principal);border-bottom:1px solid rgba(201,168,76,.2);}
+    .modal-title{font-family:'Playfair Display',serif;font-size:1.4rem;color:#fff;}
+    .btn-close{filter:invert(1) brightness(.7);}
+    .modal-body{padding:2.2rem;max-height:72vh;overflow-y:auto;}
+    .modal-body h3{font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--principal);border-left:3px solid var(--dourado);padding-left:.7rem;margin:1.7rem 0 .6rem;}
+    .modal-body h3:first-child{margin-top:0;}
+    .modal-body p,.modal-body li{font-size:.84rem;color:#444;line-height:1.85;}
+    .modal-body ul{padding-left:1.2rem;}
+    .modal-body li{margin-bottom:.32rem;}
+    .data-atualizacao{font-size:.72rem;color:var(--mudo);margin-bottom:1.8rem;font-style:italic;}
+
+    
+    
+
+    /* RESPONSIVIDADE   UTILIZAMOS COMO AUXILIO PARA A CRIAÇÃO A IA CLAUDE*/
+    @media(max-width:991px){
+      .moldura-foto img{height:370px;}.moldura-foto{margin-bottom:70px;}.borda-foto{display:none;}
+      
+    }
+    @media(max-width:767px){
+      #heroi .container{text-align:center;}
+      .olho-heroi,.d-flex.flex-wrap{justify-content:center;}.subtitulo-heroi{margin:0 auto 2.5rem;}
+      .legenda-slide h3{font-size:1.6rem;}
+      .btn-carrossel{width:40px;height:40px;font-size:.9rem;}
+      #sobre .col-lg-7,.divisor{text-align:center;}.divisor{margin-left:auto;margin-right:auto;}
+      #processo .col-lg-5{text-align:center;}
+      .titulo-secao{font-size:clamp(1.7rem,5vw,2.4rem);}
+      .barra-rodape{flex-direction:column;text-align:center;}
+    }
+    @media(max-width:575px){
+      .barra-nav .navbar-brand img{height:38px;}
+      .titulo-heroi{font-size:2.6rem;}.subtitulo-heroi{font-size:.85rem;}
+      .num-stat{font-size:2.2rem;}
+      .btn-dourado,.btn-contorno{font-size:.7rem;padding:.75rem 1.4rem;}
+      .legenda-slide{padding:1.2rem 1.4rem;}.legenda-slide p{display:none;}
+      .btn-carrossel{width:34px;height:34px;font-size:.8rem;}
+      .moldura-foto img{height:280px;}
+      .circulo-etapa{width:42px;height:42px;font-size:1rem;}.etapa::before{left:20px;}
+      .cartao-dep{padding:1.4rem;}
+      .botao-whatsapp{width:46px;height:46px;font-size:1.2rem;bottom:4.8rem;}
+      #banner-cookie{flex-direction:column;align-items:flex-start;}
+      .modal-body{padding:1.4rem;}
+    }
+    @media(max-width:379px){
+      .titulo-heroi{font-size:2.1rem;}
+      .btn-dourado,.btn-contorno{width:100%;justify-content:center;}
+    }
+  </style>
+</head>
+<body>
+
+<div id="banner-cookie">
+  <p>🍪 Usamos cookies para melhorar sua experiência. Veja nossa <a href="#" onclick="abrirModal('modal-privacidade',event)">Política de Privacidade</a>.</p>
+  <button class="btn-apenas-essenciais" onclick="salvarCookie('essenciais')">Apenas essenciais</button>
+  <button class="btn-aceitar-todos" onclick="salvarCookie('todos')">Aceitar todos</button>
+</div>
+
+<nav id="barra-principal" class="barra-nav navbar navbar-expand-lg fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="#heroi">
+      <img src="https://dev-labcromax.pantheonsite.io/wp-content/uploads/2024/02/logo-labcromax-300x225.png" alt="Lab Cromax"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='block'"/>
+      <span style="display:none;color:#fff;font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:800;">Lab Cromax</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu-nav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="menu-nav">
+      <ul class="navbar-nav gap-1 align-items-lg-center">
+        <li class="nav-item"><a class="link-nav ativo" href="#heroi">Início</a></li>
+        <li class="nav-item"><a class="link-nav" href="#servicos">Serviços</a></li>
+        <li class="nav-item"><a class="link-nav" href="#sobre">Sobre</a></li>
+        <li class="nav-item"><a class="link-nav" href="#processo">Processo</a></li>
+        <li class="nav-item"><a class="link-nav" href="#contato">Contato</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<section id="heroi">
+  <div class="sobreposicao-heroi"></div>
+  <div class="container">
+    <div class="col-xl-6 col-lg-7" style="padding-top:calc(4rem + 80px);padding-bottom:4rem;">
+      <div class="olho-heroi">Laboratório de Prótese Dentária</div>
+      <h1 class="titulo-heroi">Lab<br/><em>Cromax</em></h1>
+      <p class="subtitulo-heroi">Restaurando confiança e recriando sorrisos. O laboratório que entende a importância de cada detalhe — do planejamento à entrega final.</p>
+      <div class="d-flex flex-wrap gap-3">
+        <a href="https://wa.me/5511977835167" class="btn-dourado" target="_blank"><i class="bi bi-whatsapp"></i>Falar no WhatsApp</a>
+        <a href="#servicos" class="btn-contorno">Nossos Serviços <i class="bi bi-arrow-down"></i></a>
+      </div>
+      <div class="d-flex flex-wrap gap-4 mt-5">
+        <div><div class="num-stat" data-alvo="10">0<span>+</span></div><div class="label-stat">Anos de experiência</div></div>
+        <div><div class="num-stat" data-alvo="5000">0<span>+</span></div><div class="label-stat">Próteses entregues</div></div>
+        <div><div class="num-stat" data-alvo="5">0</div><div class="label-stat">Dias prazo máximo</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="diferenciais" class="py-5">
+  <div class="container py-4">
+    <div class="row mb-5 fade-subir">
+      <div class="col-lg-5">
+        <div class="olho">Por que escolher</div>
+        <h2 class="titulo-secao" style="color:var(--principal);">Nossos <em style="color:var(--dourado);font-style:italic;">diferenciais</em></h2>
+      </div>
+      <div class="col-lg-6 offset-lg-1 d-flex align-items-end">
+        <p style="color:var(--mudo);font-size:.85rem;line-height:1.9;margin:0;">Trabalhamos com rigorosos padrões de excelência, comunicação direta e prazos que respeitam a rotina do dentista.</p>
+      </div>
+    </div>
+    <div class="fade-subir">
+      <div class="dif-bloco">
+        <div class="dif-bloco-esq">
+          <span class="dif-bloco-n">01</span>
+          <div class="dif-bloco-ico"><i class="bi bi-gem"></i></div>
+        </div>
+        <div class="dif-bloco-dir" data-n="01">
+          <div class="dif-bloco-tag">Materiais</div>
+          <div class="dif-bloco-titulo">Qualidade Premium</div>
+          <p class="dif-bloco-texto">Materiais de primeira linha e técnicos especializados garantem próteses com resultado estético e funcional superior. Cada peça é inspecionada antes da entrega.</p>
+        </div>
+      </div>
+      <div class="dif-bloco">
+        <div class="dif-bloco-esq">
+          <span class="dif-bloco-n">02</span>
+          <div class="dif-bloco-ico"><i class="bi bi-headset"></i></div>
+        </div>
+        <div class="dif-bloco-dir" data-n="02">
+          <div class="dif-bloco-tag">Comunicação</div>
+          <div class="dif-bloco-titulo">Atendimento Direto</div>
+          <p class="dif-bloco-texto">Comunicação direta com proprietários e gestor técnico. Resolvemos dúvidas, ajustes e urgências com agilidade e total transparência em cada etapa.</p>
+        </div>
+      </div>
+      <div class="dif-bloco">
+        <div class="dif-bloco-esq">
+          <span class="dif-bloco-n">03</span>
+          <div class="dif-bloco-ico"><i class="bi bi-lightning-charge-fill"></i></div>
+        </div>
+        <div class="dif-bloco-dir" data-n="03">
+          <div class="dif-bloco-tag">Entrega</div>
+          <div class="dif-bloco-titulo">Prazo Garantido</div>
+          <p class="dif-bloco-texto">Entregas em até 5 dias úteis sem comprometer a qualidade. Processo otimizado que respeita o cronograma do consultório e do paciente.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="servicos" class="py-5">
+  <div class="container py-4">
+    <div class="row align-items-end mb-4 fade-subir">
+      <div class="col-md-8">
+        <div class="olho">O que oferecemos</div>
+        <h2 class="titulo-secao" style="color:#fff;">Nossos <em style="color:var(--dourado);font-style:italic;">Serviços</em></h2>
+      </div>
+    </div>
+    <div class="fade-subir">
+      <div class="envoltorio-carrossel" id="envoltorio-carrossel">
+        <div class="trilho-carrossel" id="trilho-carrossel">
+          <div class="slide-servico"><img src="ESTETICA.jpeg" alt="Prótese Fixa"/><div class="legenda-slide"><h3>Prótese Fixa</h3><p>Coroas, pontes e laminados concebidos com rigor técnico e sensibilidade estética, individualizados para restaurar função e harmonia com máxima durabilidade.</p></div></div>
+          <div class="slide-servico"><img src="FUNDIÇÃO.jpeg" alt="Implante"/><div class="legenda-slide"><h3>Implante</h3><p>Componentes implantossuportados com controle dimensional criterioso, garantindo passividade de assentamento, estabilidade oclusal e longevidade da reabilitação.</p></div></div>
+          <div class="slide-servico"><img src="LENTE.jpeg" alt="Metal Free"/><div class="legenda-slide"><h3>Metal Free</h3><p>Reabilitações em dissilicato de lítio ou zircônia de alta resistência — sem reflexos metálicos, com biocompatibilidade superior e translucidez próxima ao dente natural.</p></div></div>
+          <div class="slide-servico"><img src="CERAMICA.jpeg" alt="Cerâmica"/><div class="legenda-slide"><h3>Cerâmica</h3><p>Estratificação manual camada a camada, reproduzindo fluorescência, opalescência e gradiente cromático dos dentes naturais. Para casos de exigência estética máxima.</p></div></div>
+          <div class="slide-servico"><img src="DIGITAL.jpeg" alt="Digital"/><div class="legenda-slide"><h3>Digital</h3><p>Fluxo CAD/CAM do planejamento virtual ao fresamento em zircônia, PMMA ou dissilicato — adaptação marginal precisa e previsibilidade clínica superior.</p></div></div>
+        </div>
+        <button class="btn-carrossel btn-anterior" id="btn-anterior"><i class="bi bi-chevron-left"></i></button>
+        <button class="btn-carrossel btn-proximo" id="btn-proximo"><i class="bi bi-chevron-right"></i></button>
+        <div class="contador-carrossel" id="contador-carrossel">1 / 5</div>
+        <div class="barra-progresso" id="barra-progresso"></div>
+      </div>
+      <div class="pontos-carrossel" id="pontos-servicos"></div>
+    </div>
+  </div>
+</section>
+
+<section id="sobre" class="py-5">
+  <div class="container py-4">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-5 fade-subir">
+        <div class="moldura-foto">
+          <img src="https://dev-labcromax.pantheonsite.io/wp-content/uploads/2024/02/a64af718-8497-4ebd-93bf-b900f00930e7.jpeg" alt="Lab Cromax"/>
+          <div class="borda-foto"></div>
+        </div>
+      </div>
+      <div class="col-lg-7 fade-subir" style="transition-delay:.15s">
+        <div class="olho">Quem somos</div>
+        <h2 class="titulo-secao" style="color:var(--principal);">Sobre o <em style="color:var(--dourado);font-style:italic;">Lab Cromax</em></h2>
+        <div class="divisor"></div>
+        <div class="topico"><div class="topico-num">01</div><div><h5>Centro de Excelência</h5><p>Laboratório dedicado à criação de próteses fixas que unem funcionalidade, durabilidade e estética. Cada trabalho reflete anos de experiência.</p></div></div>
+        <div class="topico"><div class="topico-num">02</div><div><h5>Parceria com Dentistas</h5><p>Trabalhamos junto a cada profissional garantindo que as próteses atendam plenamente às expectativas clínicas e estéticas.</p></div></div>
+        <div class="topico"><div class="topico-num">03</div><div><h5>Tecnologia e Qualidade</h5><p>Investimos em tecnologia de ponta com rigorosos padrões em cada etapa — da seleção de materiais ao acabamento final.</p></div></div>
+        <div class="topico"><div class="topico-num">04</div><div><h5>Estética e Personalização</h5><p>Criamos próteses que se integram naturalmente, proporcionando um sorriso harmonioso e completamente personalizado.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="processo" class="py-5">
+  <div class="container py-4">
+    <div class="row">
+      <div class="col-lg-5 mb-5 mb-lg-0 fade-subir">
+        <div class="olho">Como trabalhamos</div>
+        <h2 class="titulo-secao" style="color:var(--principal);">Nosso <em style="color:var(--dourado);font-style:italic;">processo</em></h2>
+        <div class="divisor"></div>
+        <p style="font-size:.85rem;color:var(--mudo);line-height:1.9;">Da consulta inicial à entrega final, cada etapa é conduzida com cuidado e comunicação transparente.</p>
+        <a href="https://wa.me/5511977835167" class="btn-dourado d-inline-flex mt-4" target="_blank"><i class="bi bi-whatsapp"></i>Iniciar agora</a>
+      </div>
+      <div class="col-lg-6 offset-lg-1 fade-subir" style="transition-delay:.15s">
+        <div class="etapa"><div class="circulo-etapa">1</div><div class="pt-2"><h4>Recebimento e Análise</h4><p>Recebemos o caso com prescrição e molde. Nosso técnico analisa cada detalhe antes de iniciar.</p></div></div>
+        <div class="etapa"><div class="circulo-etapa">2</div><div class="pt-2"><h4>Planejamento e Produção</h4><p>Definimos o melhor material e técnica. A produção segue protocolos rígidos de qualidade.</p></div></div>
+        <div class="etapa"><div class="circulo-etapa">3</div><div class="pt-2"><h4>Controle de Qualidade</h4><p>Antes da entrega, inspeção completa: ajuste, acabamento e verificação estética rigorosa.</p></div></div>
+        <div class="etapa"><div class="circulo-etapa">4</div><div class="pt-2"><h4>Entrega em até 5 dias</h4><p>Entregamos no prazo combinado, com embalagem adequada e documentação para o prontuário.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="depoimentos" class="py-5">
+  <div class="container py-4">
+    <div class="text-center mb-5 fade-subir">
+      <div class="olho d-inline-flex">O que dizem</div>
+      <h2 class="titulo-secao mt-2" style="color:#fff;">Depoimentos dos <em style="color:var(--dourado);font-style:italic;">nossos parceiros</em></h2>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-4 fade-subir">
+        <div class="cartao-dep"><div class="estrelas-dep">★★★★★</div><p class="texto-dep">"Trabalho com o Lab Cromax há mais de 3 anos. A qualidade das peças e o cumprimento dos prazos fazem toda a diferença."</p><div class="autor-dep"><div class="avatar-dep"><i class="bi bi-person-fill"></i></div><div><div class="nome-dep">Dr. Ricardo Alves</div><div class="cargo-dep">Cirurgião-Dentista — São Paulo/SP</div></div></div></div>
+      </div>
+      <div class="col-md-4 fade-subir" style="transition-delay:.12s">
+        <div class="cartao-dep"><div class="estrelas-dep">★★★★★</div><p class="texto-dep">"O atendimento direto com a equipe técnica é o grande diferencial. Qualquer ajuste, tenho resposta rápida."</p><div class="autor-dep"><div class="avatar-dep"><i class="bi bi-person-fill"></i></div><div><div class="nome-dep">Dra. Fernanda Costa</div><div class="cargo-dep">Especialista em Prótese — Santo André/SP</div></div></div></div>
+      </div>
+      <div class="col-md-4 fade-subir" style="transition-delay:.24s">
+        <div class="cartao-dep"><div class="estrelas-dep">★★★★★</div><p class="texto-dep">"Minha clínica cresceu depois que comecei a trabalhar com o Cromax. Prazos cumpridos, qualidade consistente."</p><div class="autor-dep"><div class="avatar-dep"><i class="bi bi-person-fill"></i></div><div><div class="nome-dep">Dr. Marcos Oliveira</div><div class="cargo-dep">Odontologia Estética — São Paulo/SP</div></div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contato" class="py-5">
+  <div class="container py-4">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-5 fade-subir">
+        <div class="olho">Fale conosco</div>
+        <h2 class="titulo-secao" style="color:var(--principal);">Entre em <em style="color:var(--dourado);font-style:italic;">contato</em></h2>
+        <div class="divisor"></div>
+        <p style="font-size:.86rem;color:var(--mudo);line-height:1.9;">Está procurando por próteses de alta qualidade? Fale com nossa equipe e seja nosso parceiro de laboratório.</p>
+      </div>
+      <div class="col-lg-7 fade-subir" style="transition-delay:.15s">
+        <div style="background:#fff;border-radius:2px;box-shadow:0 4px 50px rgba(10,25,64,.07);padding:2.8rem;border-top:3px solid var(--dourado);">
+          <h4 class="serifa" style="font-size:1.8rem;font-weight:800;color:var(--principal);margin-bottom:.45rem;">Vamos trabalhar juntos</h4>
+          <p class="mb-4" style="font-size:.82rem;color:var(--mudo);">Parceiros de odontologia que buscam excelência laboratorial com prazo e qualidade garantidos.</p>
+          <div class="row g-3 text-center mb-4">
+            <div class="col-4"><a href="https://wa.me/5511977835167" target="_blank" style="text-decoration:none;display:block;background:var(--creme);border:1px solid rgba(10,25,64,.08);border-radius:2px;padding:1.5rem .8rem;transition:border-color .2s,transform .2s;" onmouseover="this.style.cssText+=';border-color:var(--dourado);transform:translateY(-3px)'" onmouseout="this.style.cssText+=';border-color:rgba(10,25,64,.08);transform:none'"><i class="bi bi-whatsapp" style="font-size:1.9rem;color:#25d366;"></i><div style="font-size:.72rem;font-weight:700;color:var(--principal);margin-top:.55rem;">WhatsApp</div></a></div>
+            <div class="col-4"><a href="mailto:labcromax@gmail.com" style="text-decoration:none;display:block;background:var(--creme);border:1px solid rgba(10,25,64,.08);border-radius:2px;padding:1.5rem .8rem;transition:border-color .2s,transform .2s;" onmouseover="this.style.cssText+=';border-color:var(--dourado);transform:translateY(-3px)'" onmouseout="this.style.cssText+=';border-color:rgba(10,25,64,.08);transform:none'"><i class="bi bi-envelope-fill" style="font-size:1.9rem;color:var(--dourado);"></i><div style="font-size:.72rem;font-weight:700;color:var(--principal);margin-top:.55rem;">E-mail</div></a></div>
+            <div class="col-4"><a href="https://www.instagram.com/labcromax/" target="_blank" style="text-decoration:none;display:block;background:var(--creme);border:1px solid rgba(10,25,64,.08);border-radius:2px;padding:1.5rem .8rem;transition:border-color .2s,transform .2s;" onmouseover="this.style.cssText+=';border-color:var(--dourado);transform:translateY(-3px)'" onmouseout="this.style.cssText+=';border-color:rgba(10,25,64,.08);transform:none'"><i class="bi bi-instagram" style="font-size:1.9rem;color:#e1306c;"></i><div style="font-size:.72rem;font-weight:700;color:var(--principal);margin-top:.55rem;">Instagram</div></a></div>
+          </div>
+          <div style="padding:1.5rem;background:var(--principal);border-radius:2px;">
+            <div class="d-flex align-items-center gap-2 mb-2"><i class="bi bi-clock-fill" style="color:var(--dourado);"></i><span style="font-size:.7rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--dourado);">Horário de Atendimento</span></div>
+            <div style="font-size:.83rem;color:rgba(255,255,255,.68);">Segunda – Sexta: <strong style="color:#fff;">8h às 18h</strong></div>
+            <div style="font-size:.83rem;color:rgba(255,255,255,.68);">Sábado: <strong style="color:#fff;">8h às 12h</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="pt-5">
+  <div class="container">
+    <div class="row g-5">
+      <div class="col-lg-4 col-md-6">
+        <img src="https://dev-labcromax.pantheonsite.io/wp-content/uploads/2024/02/logo-labcromax-300x225.png" alt="Lab Cromax" style="height:50px;filter:brightness(0) invert(1);opacity:.8;" onerror="this.style.display='none'"/>
+        <p class="mt-2" style="font-size:.79rem;color:rgba(255,255,255,.38);line-height:1.78;">Restaurando confiança e recriando sorrisos com excelência, dedicação e tecnologia de ponta.</p>
+        <div class="redes-sociais mt-3">
+          <a href="https://www.instagram.com/labcromax/" target="_blank"><i class="bi bi-instagram"></i></a>
+          <a href="https://wa.me/5511977835167" target="_blank"><i class="bi bi-whatsapp"></i></a>
+          <a href="mailto:labcromax@gmail.com"><i class="bi bi-envelope-fill"></i></a>
+        </div>
+      </div>
+      <div class="col-lg-2 col-md-6">
+        <div class="titulo-rodape">Navegação</div>
+        <a href="#heroi"    class="link-rodape"><i class="bi bi-chevron-right"></i>Início</a>
+        <a href="#servicos" class="link-rodape"><i class="bi bi-chevron-right"></i>Serviços</a>
+        <a href="#sobre"    class="link-rodape"><i class="bi bi-chevron-right"></i>Sobre</a>
+        <a href="#processo" class="link-rodape"><i class="bi bi-chevron-right"></i>Processo</a>
+        <a href="#contato"  class="link-rodape"><i class="bi bi-chevron-right"></i>Contato</a>
+      </div>
+
+      <div class="col-lg-3 col-md-6">
+        <div class="titulo-rodape">Contato</div>
+        <a href="https://wa.me/5511977835167" class="link-rodape" target="_blank"><i class="bi bi-whatsapp"></i>(11) 97783-5167</a>
+        <a href="mailto:labcromax@gmail.com"  class="link-rodape"><i class="bi bi-envelope-fill"></i>labcromax@gmail.com</a>
+        <span class="link-rodape"><i class="bi bi-geo-alt-fill"></i>R. Itacurubá, 267 — Vila Mascote, SP</span>
+        <div class="mt-3 p-3" style="background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.15);border-radius:2px;">
+          <div style="font-size:.64rem;letter-spacing:.15em;text-transform:uppercase;color:var(--dourado);margin-bottom:.28rem;">Atendimento</div>
+          <div style="font-size:.78rem;color:rgba(255,255,255,.5);">Seg–Sex: 8h às 18h</div>
+          <div style="font-size:.78rem;color:rgba(255,255,255,.5);">Sábado: 8h às 12h</div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6">
+        <div class="titulo-rodape">Localização</div>
+        <div style="border-radius:2px;overflow:hidden;border:1px solid rgba(201,168,76,.15);">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3654.3!2d-46.67066!3d-23.64679!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce5077fb7b8359%3A0xbae4a58068ae6fab!2sR.%20Itacurub%C3%A1%2C%20267%20-%20Vila%20Mascote%2C%20S%C3%A3o%20Paulo%20-%20SP%2C%2004362-070!5e0!3m2!1spt-BR!2sbr!4v1700000000000"
+            width="100%" height="180" style="border:0;display:block;" allowfullscreen="" loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+        <a href="https://maps.google.com/?q=R.+Itacurub%C3%A1,+267,+Vila+Mascote,+S%C3%A3o+Paulo" target="_blank" class="link-rodape mt-2"><i class="bi bi-box-arrow-up-right"></i>Ver no Google Maps</a>
+      </div>
+    </div>
+    <div class="barra-rodape mt-5">
+      <span>&copy; 2026 Lab Cromax — Todos os direitos reservados.</span>
+      <div>
+        <a onclick="abrirModal('modal-privacidade',event)">Política de Privacidade</a>
+        <a onclick="abrirModal('modal-termos',event)">Termos de Uso</a>
+        <a onclick="abrirModal('modal-cookies',event)">Cookies</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<a href="https://wa.me/5511977835167" class="botao-whatsapp" target="_blank"><i class="bi bi-whatsapp"></i></a>
+
+<div class="modal fade" id="modal-privacidade" tabindex="-1"><div class="modal-dialog modal-xl modal-dialog-scrollable"><div class="modal-content">
+  <div class="modal-header"><h5 class="modal-title"><i class="bi bi-shield-lock-fill me-2" style="color:var(--dourado)"></i>Política de Privacidade</h5><button class="btn-close" data-bs-dismiss="modal"></button></div>
+  <div class="modal-body">
+    <p class="data-atualizacao">Última atualização: 08/06/2026 — Conforme LGPD (Lei nº 13.709/2018)</p>
+    <h3>1. Controlador dos Dados</h3><p>Lab Cromax — São Paulo/SP. Contato: labcromax@gmail.com | (11) 97783-5167.</p>
+    <h3>2. Dados Coletados</h3><ul><li><strong>Identificação:</strong> nome, CRO, clínica.</li><li><strong>Contato:</strong> e-mail, telefone/WhatsApp.</li><li><strong>Navegação:</strong> IP, dispositivo, páginas visitadas (cookies, com consentimento).</li><li><strong>Caso clínico:</strong> informações técnicas das próteses solicitadas.</li></ul>
+    <h3>3. Finalidades</h3><ul><li>Responder mensagens e orçamentos;</li><li>Executar contratos de serviços;</li><li>Cumprir obrigações legais (CFO, CRO, Anvisa, Receita Federal);</li><li>Melhorar o site com dados analíticos anonimizados.</li></ul>
+    <h3>4. Base Legal (LGPD Art. 7º)</h3><ul><li><strong>Consentimento</strong> (I): cookies analíticos;</li><li><strong>Execução de contrato</strong> (V): gestão de pedidos;</li><li><strong>Obrigação legal</strong> (II): exigências fiscais;</li><li><strong>Legítimo interesse</strong> (IX): segurança do site.</li></ul>
+    <h3>5. Compartilhamento</h3><p>Não vendemos dados. Compartilhamos apenas com prestadores tecnológicos e autoridades públicas (ordem judicial).</p>
+    <h3>6. Retenção</h3><ul><li>Dados de contato: 5 anos;</li><li>Dados fiscais: 5 anos (CTN);</li><li>Cookies analíticos: 13 meses.</li></ul>
+    <h3>7. Seus Direitos (Art. 18 LGPD)</h3><p>Você pode acessar, corrigir, bloquear ou eliminar seus dados. Solicitações em até 15 dias via labcromax@gmail.com. Reclamações: <strong>www.gov.br/anpd</strong>.</p>
+    <h3>8. Segurança</h3><p>Adotamos HTTPS e controle de acesso. Esta política pode ser atualizada com nova data de vigência.</p>
+  </div>
+  <div class="modal-footer"><button class="btn-dourado" data-bs-dismiss="modal" style="border-radius:1px;font-size:.73rem;padding:.58rem 1.4rem;">Entendi</button></div>
+</div></div></div>
+
+<div class="modal fade" id="modal-termos" tabindex="-1"><div class="modal-dialog modal-xl modal-dialog-scrollable"><div class="modal-content">
+  <div class="modal-header"><h5 class="modal-title"><i class="bi bi-file-text-fill me-2" style="color:var(--dourado)"></i>Termos de Uso</h5><button class="btn-close" data-bs-dismiss="modal"></button></div>
+  <div class="modal-body">
+    <p class="data-atualizacao">Última atualização: 08/06/2026</p>
+    <h3>1. Aceitação</h3><p>Ao acessar o site do Lab Cromax, você concorda com estes Termos.</p>
+    <h3>2. Sobre o Lab Cromax</h3><p>Laboratório de prótese dentária exclusivo para cirurgiões-dentistas e clínicas registradas no CRO. Não atendemos pacientes diretamente.</p>
+    <h3>3. Uso Permitido</h3><p>É vedado: uso para fins ilegais; reprodução de conteúdo sem autorização; transmissão de malware; engenharia reversa do site.</p>
+    <h3>4. Propriedade Intelectual</h3><p>Logotipos, imagens, textos e layout são propriedade do Lab Cromax (Lei nº 9.610/1998).</p>
+    <h3>5. Prestação de Serviços</h3><p>Prazos, preços e especificações são definidos caso a caso. O Lab Cromax pode recusar pedidos incompatíveis com suas capacidades técnicas.</p>
+    <h3>6. Responsabilidades do Dentista</h3><ul><li>Estar registrado no CRO;</li><li>Fornecer prescrições claras;</li><li>Ser responsável técnico pelo plano de tratamento;</li><li>Realizar instalação conforme protocolos vigentes.</li></ul>
+    <h3>7. Limitação de Responsabilidade</h3><p>O Lab Cromax não se responsabiliza por falhas decorrentes de prescrições incorretas ou instalação inadequada.</p>
+    <h3>8. Foro</h3><p>Legislação brasileira. Foro: Comarca de São Paulo/SP.</p>
+  </div>
+  <div class="modal-footer"><button class="btn-dourado" data-bs-dismiss="modal" style="border-radius:1px;font-size:.73rem;padding:.58rem 1.4rem;">Entendi</button></div>
+</div></div></div>
+
+<div class="modal fade" id="modal-cookies" tabindex="-1"><div class="modal-dialog modal-xl modal-dialog-scrollable"><div class="modal-content">
+  <div class="modal-header"><h5 class="modal-title"><i class="bi bi-toggles me-2" style="color:var(--dourado)"></i>Política de Cookies</h5><button class="btn-close" data-bs-dismiss="modal"></button></div>
+  <div class="modal-body">
+    <p class="data-atualizacao">Última atualização: 01/01/2024</p>
+    <h3>O que são Cookies?</h3><p>Pequenos arquivos de texto que permitem ao site reconhecer visitas futuras e melhorar a experiência.</p>
+    <h3>Cookies Utilizados</h3><ul><li><strong>Essenciais:</strong> necessários para o funcionamento básico. Não desativáveis.</li><li><strong>Analíticos:</strong> dados anônimos de navegação. Requerem consentimento.</li><li><strong>Preferência:</strong> lembram suas opções. Requerem consentimento.</li></ul>
+    <h3>Controle e Revogação</h3><p>Gerencie pelo banner de consentimento ou pelas configurações do navegador. Dúvidas: labcromax@gmail.com.</p>
+  </div>
+  <div class="modal-footer">
+    <button class="btn-apenas-essenciais" style="color:var(--principal);border-color:rgba(10,25,64,.2);" onclick="salvarCookie('essenciais');bootstrap.Modal.getInstance(document.getElementById('modal-cookies')).hide()">Apenas essenciais</button>
+    <button class="btn-aceitar-todos" onclick="salvarCookie('todos');bootstrap.Modal.getInstance(document.getElementById('modal-cookies')).hide()">Aceitar todos</button>
+  </div>
+</div></div></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  //  FADE-SUBIR
+  var observadorFade = new IntersectionObserver(function(entradas) {
+    entradas.forEach(function(entrada) {
+      if (entrada.isIntersecting) { entrada.target.classList.add('ativo'); observadorFade.unobserve(entrada.target); }
+    });
+  }, { threshold: .1 });
+  document.querySelectorAll('.fade-subir').forEach(function(el) { observadorFade.observe(el); });
+
+  //  UTILIZAMOS COMO AUXILIO PARA A CRIAÇÃO DOS CONTADORES A IA CLAUDE
+  // CONTADORES ANIMADOS
+
+
+  function animarNumero(el, alvo) {
+    var valor = 0;
+    var sufixo = el.querySelector('span');
+    function executar() {
+      valor += alvo / 55;
+      if (valor >= alvo) { el.innerHTML = alvo.toLocaleString('pt-BR') + (sufixo ? sufixo.outerHTML : ''); return; }
+      el.innerHTML = Math.floor(valor).toLocaleString('pt-BR') + (sufixo ? sufixo.outerHTML : '');
+      requestAnimationFrame(executar);
+    }
+    executar();
+  }
+  new IntersectionObserver(function(entradas) {
+    if (entradas[0].isIntersecting) document.querySelectorAll('.num-stat').forEach(function(el) { animarNumero(el, +el.dataset.alvo); });
+  }, { threshold: .5 }).observe(document.getElementById('heroi'));
+
+
+  //  UTILIZAMOS COMO AUXILIO PARA A CRIAÇÃO DO CARROSSEL A IA CLAUDE 
+  // CARROSSEL COM AUTOPLAY
+
+
+  var trilhoCarrossel  = document.getElementById('trilho-carrossel');
+  var slidesServico    = trilhoCarrossel.querySelectorAll('.slide-servico');
+  var pontosServicos   = document.getElementById('pontos-servicos');
+  var contadorEl       = document.getElementById('contador-carrossel');
+  var barraProgressoEl = document.getElementById('barra-progresso');
+  var envoltorioEl     = document.getElementById('envoltorio-carrossel');
+  var TOTAL_SLIDES     = slidesServico.length;
+  var indiceAtual      = 0;
+  var temporizadorAuto = null;
+  var pausado          = false;
+  var DURACAO_AUTO     = 4000;
+
+  slidesServico.forEach(function(_, i) {
+    var ponto = document.createElement('button');
+    ponto.className = 'ponto-carrossel' + (i === 0 ? ' ativo' : '');
+    ponto.onclick = function() { navegar(i); };
+    pontosServicos.appendChild(ponto);
+  });
+
+  function atualizarUI(n) {
+    indiceAtual = (n + TOTAL_SLIDES) % TOTAL_SLIDES;
+    trilhoCarrossel.style.transform = 'translateX(-' + (indiceAtual * 100) + '%)';
+    pontosServicos.querySelectorAll('.ponto-carrossel').forEach(function(p, i) { p.classList.toggle('ativo', i === indiceAtual); });
+    contadorEl.textContent = (indiceAtual + 1) + ' / ' + TOTAL_SLIDES;
+  }
+
+  function reiniciarBarra() {
+    barraProgressoEl.style.transition = 'none';
+    barraProgressoEl.style.width = '0%';
+    void barraProgressoEl.offsetWidth;
+    barraProgressoEl.style.transition = 'width ' + DURACAO_AUTO + 'ms linear';
+    barraProgressoEl.style.width = '100%';
+  }
+
+  function cancelarTimer() {
+    if (temporizadorAuto !== null) { clearTimeout(temporizadorAuto); temporizadorAuto = null; }
+  }
+
+  function agendarProximo() {
+    cancelarTimer();
+    if (!pausado) {
+      temporizadorAuto = setTimeout(function() { atualizarUI(indiceAtual + 1); reiniciarBarra(); agendarProximo(); }, DURACAO_AUTO);
+    }
+  }
+
+  function navegar(n) { atualizarUI(n); reiniciarBarra(); agendarProximo(); }
+
+  envoltorioEl.addEventListener('mouseenter', function() { pausado = true; cancelarTimer(); barraProgressoEl.style.transition = 'none'; });
+  envoltorioEl.addEventListener('mouseleave', function() { pausado = false; reiniciarBarra(); agendarProximo(); });
+
+  document.getElementById('btn-anterior').onclick = function() { navegar(indiceAtual - 1); };
+  document.getElementById('btn-proximo').onclick  = function() { navegar(indiceAtual + 1); };
+
+  var posicaoToque = 0;
+  trilhoCarrossel.addEventListener('touchstart', function(e) { posicaoToque = e.touches[0].clientX; }, { passive: true });
+  trilhoCarrossel.addEventListener('touchend',   function(e) { var d = posicaoToque - e.changedTouches[0].clientX; if (Math.abs(d) > 40) navegar(d > 0 ? indiceAtual + 1 : indiceAtual - 1); });
+
+  atualizarUI(0); reiniciarBarra(); agendarProximo();
+
+
+
+  // COOKIES
+  function salvarCookie(v) {
+    localStorage.setItem('lc_cookie', v);
+    document.getElementById('banner-cookie').style.display = 'none';
+  }
+  document.addEventListener('DOMContentLoaded', function() {
+    if (!localStorage.getItem('lc_cookie')) {
+      document.getElementById('banner-cookie').style.display = 'flex';
+    }
+  });
+
+  // MODAIS
+  function abrirModal(id, e) { if (e) e.preventDefault(); new bootstrap.Modal(document.getElementById(id)).show(); }
+</script>
+</body>
+</html>
